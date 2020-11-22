@@ -1,0 +1,68 @@
+FROM php:8.0-rc-fpm
+
+RUN apt-get update && \
+    apt-get install -y \
+            git \
+            libzip-dev \
+            libc-client-dev \
+            libkrb5-dev \
+            libpng-dev \
+            libjpeg-dev \
+            libwebp-dev \
+            libfreetype6-dev \
+            libkrb5-dev \
+            libicu-dev \
+            zlib1g-dev \
+            zip \
+            ffmpeg \
+            build-essential \
+            gnupg2 \
+            libpq-dev \
+            libpq5 \
+            libz-dev \
+            wget \
+            nano
+
+RUN apt-key adv --keyserver ha.pool.sks-keyservers.net --recv-keys B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
+
+RUN docker-php-ext-configure gd \
+    --with-webp=/usr/include/ \
+    --with-freetype=/usr/include/ \
+    --with-jpeg=/usr/include/
+RUN docker-php-ext-install gd
+
+RUN docker-php-ext-configure imap \
+    --with-kerberos \
+    --with-imap-ssl
+RUN docker-php-ext-install imap
+
+RUN docker-php-ext-configure zip
+RUN docker-php-ext-install zip
+
+RUN docker-php-ext-configure intl
+RUN docker-php-ext-install intl
+
+RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install exif
+RUN docker-php-ext-install fileinfo
+
+# xdebug 3.0
+RUN git clone -b "3.0.0RC1" --depth 1 https://github.com/xdebug/xdebug.git /usr/src/php/ext/xdebug \
+    && docker-php-ext-install xdebug \
+    && mkdir /tmp/debug
+
+# composer
+RUN curl --silent --show-error https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# nodejs / npm
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && apt-get install -y nodejs
+
+# redis
+RUN mkdir -p /usr/src/php/ext/redis \
+    && curl -L https://github.com/phpredis/phpredis/archive/$6.0.9.tar.gz | tar xvz -C /usr/src/php/ext/redis --strip 1 \
+    && echo 'redis' >> /usr/src/php-available-exts \
+    && docker-php-ext-install redis
+
+
+EXPOSE 9000
+CMD ["php-fpm"]
