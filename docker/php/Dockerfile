@@ -57,12 +57,6 @@ RUN curl --silent --show-error https://getcomposer.org/installer | php -- --inst
 # nodejs / npm
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && apt-get install -y nodejs
 
-# redis
-RUN mkdir -p /usr/src/php/ext/redis \
-    && curl -L https://github.com/phpredis/phpredis/archive/$6.0.9.tar.gz | tar xvz -C /usr/src/php/ext/redis --strip 1 \
-    && echo 'redis' >> /usr/src/php-available-exts \
-    && docker-php-ext-install redis
-
 
 EXPOSE 9000
 CMD ["php-fpm"]
