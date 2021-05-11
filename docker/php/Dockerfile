@@ -1,4 +1,4 @@
-FROM php:8.0-rc-fpm
+FROM php:8.0.6-fpm
 
 RUN apt-get update && \
     apt-get install -y \
@@ -47,9 +47,7 @@ RUN docker-php-ext-install exif
 RUN docker-php-ext-install fileinfo
 
 # xdebug 3.0
-RUN git clone -b "3.0.0RC1" --depth 1 https://github.com/xdebug/xdebug.git /usr/src/php/ext/xdebug \
-    && docker-php-ext-install xdebug \
-    && mkdir /tmp/debug
+RUN pecl install xdebug
 
 # composer
 RUN curl --silent --show-error https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
