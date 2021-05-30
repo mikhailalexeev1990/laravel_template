@@ -16,18 +16,12 @@
 </head>
 <body>
 
-<div class="layout-wrapper">
-    <div class="layout-top">
-        @include('components.header')
-        <main>
-            @section('main')
-            @show
-        </main>
-    </div>
-    <div class="layout-bottom">
-        @include('components.footer')
-    </div>
-</div>
+@include('components.header')
+<main>
+    @section('main')
+    @show
+</main>
+@include('components.footer')
 
 
 <script src="{{ asset('js/main.js') }}" defer></script>

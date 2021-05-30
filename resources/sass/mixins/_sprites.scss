@@ -1,6 +1,7 @@
 $sprites: (
     'close': "/svg/sprite.svg#close-svg",
     'github-logo': "/svg/sprite.svg#github-logo-svg",
+    'home': "/svg/sprite.svg#home-svg",
     'instagram': "/svg/sprite.svg#instagram-svg",
     'loader': "/svg/sprite.svg#loader-svg",
     'pen': "/svg/sprite.svg#pen-svg",
@@ -19,6 +20,10 @@ $sizes: (
     'github-logo': (
         'width': 438.549px,
         'height': 438.549px
+    ),
+    'home': (
+        'width': 511px,
+        'height': 511.999px
     ),
     'instagram': (
         'width': 512px,
